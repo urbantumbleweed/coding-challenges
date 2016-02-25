@@ -148,6 +148,20 @@ describe('Truck', function() {
         });
     });
 
+    it('should return an object with a `trucks` property', function(done){
+      clientData.then(function(clientData){
+        expect(Object.keys(clientData)).toInclude('trucks');
+        done();
+      });
+    });
+
+    it('should return with a trucks property with length ' + sampleData.length, function(done){
+      clientData.then(function(clientData){
+        expect(clientData.trucks.length).toBe(sampleData.length);
+        done();
+      });
+    });
+
     it('should return with a trucks property that contains truck objects', function(done){
       clientData.then(function(clientData){
         var truck = clientData.trucks[0];
@@ -166,6 +180,12 @@ describe('Truck', function() {
       });
     });
 
+    it('should return an object with a `tags` property', function(done){
+      clientData.then(function(clientData){
+        expect(Object.keys(clientData)).toInclude('trucks');
+        done();
+      });
+    });
 
     it('should return an object of unique tags', function(done){
       clientData.then(function(clientData){
