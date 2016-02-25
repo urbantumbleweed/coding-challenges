@@ -165,6 +165,63 @@ describe('Truck', function() {
         done();
       });
     });
+
+
+    it('should return an object of unique tags', function(done){
+      clientData.then(function(clientData){
+        expect(_.chain(clientData.tags)
+          .map(function(val){
+            return val;
+          })
+          .uniq()
+          .size()
+          .value() === _.size(clientData.tags)).toBe(true);
+        done();
+      });
+    });
+  });
+
+
+  describe('#_tagMap()', function(){
+    var objToChange = null;
+
+    beforeEach(function(){
+      objToChange = {
+        trucks: [],
+        tags: {}
+      };
+      tags = [
+        'Burgers' ,
+        'Melts',
+        'Hot dogs',
+        'Burritos',
+        'Sandwiches',
+        'Fries',
+        'Onion rings',
+        'Drinks'
+      ];
+    });
+
+    afterEach(function(){
+      objToChange = null;
+    });
+
+    it('should return undefined', function(){
+      expect(Truck._tagMap(tags, objToChange)).toBe(undefined);
+    });
+
+    it('should add tags to the `mapObj` if they are not present', function(){
+      expect(_.size(objToChange.tags)).toBe(0);
+      Truck._tagMap(tags, objToChange);
+      expect(_.size(objToChange.tags)).toBe(tags.length);
+    });
+
+    it('should not add duplicate tags to `mapObj`', function(){
+      var correctLength = tags.length;
+      tags.push('Drinks', 'Melts', 'Burgers');
+      Truck._tagMap(tags, objToChange);
+      expect(_.size(objToChange.tags)).toBe(correctLength);
+    });
   });
 
   describe('#_taggify()', function(){

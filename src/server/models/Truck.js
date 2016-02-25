@@ -121,6 +121,26 @@ function _taggify(stringOfTags, separator){
 }
 
 /**
+ * Add tags from each truck model to the collection
+ * @name _tagMap
+ * @memberOf Truck
+ * @private
+ * @internal adds tags from each API model to the collection destined for client. This is used for autocomplete and searching.
+ * @param  {array} tags   -the tags from a single truck
+ * @param  {object} mapObj -the tags from all the trucks in a set
+ * @return {undefined}        side-effect decorating mapObj
+ */
+function _tagMap(tags, mapObj){
+  // add a tag to the collection tag if it is not not already there
+  // insert tags on the data.tags
+  tags.forEach(function(tag){
+    if (mapObj.tags[tag]){
+      return;
+    }
+    mapObj.tags[tag] = tag;
+  });
+}
+
  * Accepts data from the Socrata API and transforms it to a subset that may be used internally to the application
  * @name _transformTruckData
  * @memberOf Truck
