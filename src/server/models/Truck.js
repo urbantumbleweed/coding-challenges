@@ -36,6 +36,22 @@ function Truck(props){
 }
 
 /**
+ * Wraps the http request method
+ * @name _requestData
+ * @memberOf Truck
+ * @private
+ * @internal Wraps the http request method
+ * @property  {object} opts
+ * @property  {string} opts.uri -the url to make the request
+ * @property  {object} opts.qs -the key:value pairs that create the query string
+ * @property  {boolean} opts.json -flag to parse JSON and return JavaScript object
+ * @return {object}      promise object containing response data
+ */
+function _requestData(opts){
+  return rp(opts);
+}
+
+/**
  * Accepts data from the Socrata API and transforms it to a subset that may be used internally to the application
  * @name _transformTruckData
  * @memberOf Truck
