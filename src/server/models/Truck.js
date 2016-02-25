@@ -141,6 +141,24 @@ function _tagMap(tags, mapObj){
   });
 }
 
+/**
+ * Creates an instance of Truck with API data
+ * @name _makeTaggedTruck
+ * @private
+ * @memberOf Truck
+ * @internal This takes the generated tags and creates a new Truck model and appends the tags.
+ * @param  {object} data -uses of subset of API props. See Truck.
+ * @param  {array} tags -the tags derived from a single API record
+ * @return {object}      returns a new instance of truck
+ */
+function _makeTaggedTruck(data, tags){
+  // add the tags to the food truck object for filtering ===================
+  var newTruck = new Truck(data);//create a new Truck object with api data.
+  newTruck.tags = newTruck.tags.concat(tags); //insert into truck.tags array
+  return newTruck;
+}
+
+/**
  * Accepts data from the Socrata API and transforms it to a subset that may be used internally to the application
  * @name _transformTruckData
  * @memberOf Truck

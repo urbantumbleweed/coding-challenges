@@ -179,8 +179,46 @@ describe('Truck', function() {
         done();
       });
     });
+
+    it('should convert a colon delimted string into an array of tags', function(){
+      clientData.then(function(clientData){
+
+      })
+    });
   });
 
+  describe('#_makeTaggedTruck()', function(){
+    var data = null;
+    beforeEach(function(){
+      tags = [
+        'Burgers',
+        'Melts',
+        'Hot dogs',
+        'Burritos',
+        'Sandwiches',
+        'Fries',
+        'Onion rings',
+        'Drinks'
+      ];
+      data = sampleData[1];
+    });
+
+    it('should return a Truck object', function(){
+      expect(Truck._makeTaggedTruck(data, tags)).toBeA('object');
+    });
+
+    it('should return a Truck with a `tags` property', function(){
+      expect(Truck._makeTaggedTruck(data, tags).tags).toExist();
+    });
+
+    it('should return a Truck with a `tags` property that is an Array', function(){
+      expect(Truck._makeTaggedTruck(data, tags).tags instanceof Array).toBe(true);
+    });
+
+    it('should return a Truck with the right number of tags', function(){
+      expect(Truck._makeTaggedTruck(data, tags).tags.length).toBe(tags.length);
+    });
+  });
 
   describe('#_tagMap()', function(){
     var objToChange = null;
