@@ -167,4 +167,31 @@ describe('Truck', function() {
     });
   });
 
+  describe('#_taggify()', function(){
+    var tags = null;
+
+    beforeEach(function(){
+      tags = 'Burgers: melts: hot dogs: burritos:sandwiches: fries: onion rings: drinks';
+    });
+
+    afterEach(function(){
+      tags = null;
+    });
+
+    it('should return an array', function(){
+      expect(Truck._taggify(tags) instanceof Array).toBe(true);
+    });
+
+    it('should parse tags from a string', function(){
+      expect(Truck._taggify(tags).length).toBe(8);
+    });
+
+    it('should capitalize each tag generated', function(){
+      var items = Truck._taggify(tags);
+      var lowercase = _.reject(items, function(tag){
+        return tag.charAt(0) === tag.charAt(0).toUpperCase();
+      });
+      expect(lowercase.length).toBe(0);
+    });
+  });
 });

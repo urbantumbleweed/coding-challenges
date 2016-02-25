@@ -102,6 +102,24 @@ function getTrucksByLocation(query){
       throw Err;
     });
 }
+
+/**
+ * Function that accepts a string and splits on a separator
+ * @name  _taggify
+ * @memberOf Truck
+ * @private
+ * @internal creates a list of tags from string
+ * @param  {string} stringOfTags -the string to be split into tags
+ * @param  {string} separator -the string or regular expression that splits the string input
+ * @return {array}              List of tags that have normalized capitalization
+ */
+function _taggify(stringOfTags, separator){
+  var re = separator || /\s*:\s*/; //find ':' surrounded by spaces or not
+  return stringOfTags.split(re).map(function(tag){
+    return tag.slice(0,1).toUpperCase() + tag.slice(1);
+  });// Split by finding ':' separator. Capitalize first letter to normalize
+}
+
 /**
  * Accepts data from the Socrata API and transforms it to a subset that may be used internally to the application
  * @name _transformTruckData
