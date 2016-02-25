@@ -82,6 +82,51 @@ describe('Truck', function() {
     tags = null;
   });
 
+  describe('#getTrucksByLocation', function(){
+    var query = {};
+    beforeEach(function(){
+      query.latitude = 37.7804739;
+      query.longitude = -122.40616800000001;
+
+    });
+
+    it('should throw an error if `latitude` is missing', function(){
+      expect(function(){
+        Truck.getTrucksByLocation({
+          longitude: query.longitude
+        })
+      }).toThrow(/Latitude/);
+    });
+
+    it('should throw an error if `longitude` is missing', function(){
+      expect(function(){
+        Truck.getTrucksByLocation({
+          latitude: query.latitude
+        })
+      }).toThrow(/Longitude/);
+    });
+
+    it('should not require a value for `radius`', function(done){
+      expect(function(){
+        Truck.getTrucksByLocation({
+          latitude: query.latitude,
+          longitude: query.longitude
+        })
+      }).toNotThrow();
+      done();
+    });
+
+    it('should not require value for `limit`', function(done){
+      expect(function(){
+        Truck.getTrucksByLocation({
+          latitude: query.latitude,
+          longitude: query.longitude
+        })
+      }).toNotThrow();
+      done();
+    });
+  });
+
   describe('#_transformTruckData()', function(){
     var clientData = null;
 

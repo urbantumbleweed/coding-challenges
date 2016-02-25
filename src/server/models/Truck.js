@@ -52,6 +52,57 @@ function _requestData(opts){
 }
 
 /**
+ * The wrapper to the Socrata API.
+ * @memberOf Truck
+ * @interface
+ * @param {object} query request params from client request
+ * @property  {number} query.latitude [required] Number from the browser navigator.geolocation for latitude
+ * @property  {number} query.longitude [required] Number from the browser navigator.geolocation for longitude
+ * @property  {number} query.radius [optional] Number representing meters from lat/long coordinate that results should be returned. Default is 500.
+ * @property  {number} query.limit [optional] Max number of records the api should return. Default is 30
+ * @return {object}       Promise object with the transformed data for use on client.
+ */
+function getTrucksByLocation(query){
+  // Error Handling
+  if (!query.latitude || !query.longitude){
+    if (!query.latitude){
+      throw new Error('`Latitude` is a required property on the `query` object');
+    } else {
+      throw new Error('`Longitude` is a required property on the `query` object');
+    }
+  }
+
+  // values pulled from query argument
+  var latitude = query.latitude; //client browser latitude position
+  var longitude = query.longitude; //client browser longitude position
+  var radius = query.radius || DEFAULT_RADIUS; //radius to search
+  var limit = query.limit || DEFAULT_LIMIT; //limit of records
+
+  // the query string used with the API
+  var qs = 'within_circle(location,' + latitude + ', ' + longitude + ', ' + radius+')';
+
+  // The request options used to generate the request.
+  var requestOptions = {
+    uri: BASE_URL,
+    qs: { //where to set criteria for search
+        $where: qs,//this sets the boundary for search
+        $limit: limit //this sets the limit of records
+    },
+    json: true // Automatically parses the JSON string in the response
+  };
+
+  // The request that returns a promise for a data object.
+  return _requestData(requestOptions)
+    .then(function(truckData){
+      return _transformTruckData(truckData);
+    })
+    .catch(function(err){
+      var Err = new Error('There was an error getting truck data by location', err);
+      console.log(Err, err);
+      throw Err;
+    });
+}
+/**
  * Accepts data from the Socrata API and transforms it to a subset that may be used internally to the application
  * @name _transformTruckData
  * @memberOf Truck
