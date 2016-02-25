@@ -4,7 +4,7 @@
   "description": "Food truck finder by food-type and location",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./src/server/index.js",
+    "start": "node ./src/server/index.js",
     "test": "mocha ./test/**/*.js --watch",
     "testRoutes": "node ./test/routeTester"
   },
