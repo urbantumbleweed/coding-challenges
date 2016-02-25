@@ -129,16 +129,28 @@ describe('Truck', function() {
 
   describe('#_transformTruckData()', function(){
     var clientData = null;
+    var tags = null;
 
     beforeEach(function(){
       clientData = fakerData
         .then(function(data){
           return Truck._transformTruckData(data);
         });
+      tags = [
+        'Burgers' ,
+        'Melts',
+        'Hot dogs',
+        'Burritos',
+        'Sandwiches',
+        'Fries',
+        'Onion rings',
+        'Drinks'
+      ];
     });
 
     afterEach(function(){
       clientData = null;
+      tags = null;
     });
 
     it('should return an object', function (done) {
@@ -200,9 +212,21 @@ describe('Truck', function() {
       });
     });
 
-    it('should convert a colon delimted string into an array of tags', function(){
-      clientData.then(function(clientData){
-
+    it('should convert a colon delimted string into an array of tags', function(done){
+      fakerData.then(function(data){
+        return data[1].fooditems;
+      })
+      .then(function(initialString){
+        expect(initialString).toBe(sampleData[1].fooditems + '');
+        return clientData;
+      })
+      .then(function(clientData){
+        var processed = clientData.trucks[1].tags;
+        expect(_.isEqual(tags, processed)).toBe(true);
+        done();
+      })
+      .catch(function(err){
+        done(err);
       })
     });
   });
