@@ -6,14 +6,12 @@ var rp = require('request-promise');
 var times = 100;
 var count = 0;
 
-
 var server = http.createServer();
 
 server.listen(8000, function(){
   console.log('listening on port ', 8000);
 
   var id = pinger(5000);
-
 });
 
 function pinger(delay){
@@ -22,7 +20,7 @@ function pinger(delay){
       clearInterval(id);
     }
     count++;
-    rp('http://192.168.128.47:8080/trucks?latitude=-122&longitude=34')
+    rp('http://192.168.128.47:8080/trucks?latitude=37.7804739&longitude=-122.40616800000001&limit=2')
     .then(function(res){
       console.log('no error', JSON.parse(res));
     })
