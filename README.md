@@ -57,7 +57,7 @@ The front-end is built with React and Redux utilizing HTML5 Location API with Go
 | user  | object  |  location, location.latitude, location.longitude | user location object |
 | search  |  string |   | state of searchBox|
 | activeTruck  |  object |  [Truck Model](#truck-model) | Currently higlighted Truck|
-| data  |  object  |  all, filtered | Collections of truck models |
+| trucks  |  object  |  all, filtered | Collections of truck models |
 | view  | object  |  zoom, position, boxPoints | values to control map view|
 
 ###### Application Actions
@@ -69,8 +69,8 @@ The front-end is built with React and Redux utilizing HTML5 Location API with Go
 | onMapLoad  |  transmitBoxDimensions, filterByGeolocation | data.filter  |  filter the map to have only markers in visible space |
 | search.onChange  |  filterByFoodType |  search, data.filter  |  actively update data.filtered based on text in search box, remove non-matching markers, re-render |
 | marker.onClick  |  showTruckDetails |  activeTruck | sets the activeTruck to the clicked target  |
-| map.onDragEnd  |  repositionMap, transmitMapDimensions, filterByGeolocation, getTrucksByLocation |  position, boxPoints |  repositions the map based on user input|
-| map.onPinch, mouse.onScroll  |  repositionMap, transmitMapDimensions |  zoom, boxPoints | Resize the map view based on user input  |
+| map.onDragEnd  |  repositionMap, transmitBoxDimensions, filterByGeolocation, getTrucksByLocation |  position, boxPoints |  repositions the map based on user input|
+| map.onPinch, mouse.onScroll  |  repositionMap, transmitBoxDimensions |  zoom, boxPoints | Resize the map view based on user input  |
 
 ### Install
 
