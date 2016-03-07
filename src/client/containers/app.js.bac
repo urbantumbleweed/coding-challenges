@@ -1,0 +1,60 @@
+'use strict';
+
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { ActionCreators } from 'redux-undo'
+
+class App extends Component {
+  render () {
+
+    return (
+
+    );
+  }
+}
+
+App.PropTypes = {
+  //////////////Actions////////////////////////
+  getCurrentLocation: PropTypes.func.isRequired,
+  getTrucksByLocation: PropTypes.func.isRequired,
+  repositionMap: PropTypes.func.isRequired,
+  transmitBoxDimensions: PropTypes.func.isRequired,
+  filterByGeolocation: PropTypes.func.isRequired,
+  filterByFoodType: PropTypes.func.isRequired,
+  showTruckDetails: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired,
+
+  //////////////State///////////////////////////
+  user: PropTypes.shape({
+    location: PropTypes.shape({
+      latitude: PropTypes.string,
+      longitude: PropTypes.string
+    })
+  }).isRequired,
+  search: PropTypes.string.isRequired,
+  activeTruck: PropTypes.shape({
+    objectid: PropTypes.string
+    applicant: PropTypes.string
+    facilityType: PropTypes.string
+    locationDescription: PropTypes.string
+    foodItems: PropTypes.string
+    latitude: PropTypes.string
+    longitude: PropTypes.string
+    daysHours: PropTypes.string
+    location: PropTypes.shape({
+      needs_recoding: PropTypes.bool,
+      latitude: PropTypes.string,
+      longitude: PropTypes.string
+    }).isRequired
+    tags: PropTypes.arrayOf(PropTypes.string)
+  }).isRequired,
+  trucks: PropTypes.shape({
+    all: PropTypes.arrayOf(PropTypes.object),
+    filtered: PropTypes.arrayOf(PropTypes.object),
+  }).isRequired,
+  view: PropTypes.shape({
+    zoom: PropTypes.number,
+
+  }).isRequired,
+
+}

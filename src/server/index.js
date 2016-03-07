@@ -16,10 +16,11 @@ var server = express(); //create an express instance
 
 // Configure Middleware
 server.use(bodyParser.json()); //decorate server with middleware
+server.use(express.static(path.join(__dirname, '../../public')));
 
 // Routing
 //serve the index page on GET '/'
-server.get('/', express.static(path.join(__dirname, '../../public')));
+server.get('/app.js', express.static(path.join(__dirname, '../../public/app.js')));
 server.get('/trucks', truckController.getTrucks);
 
 // Initialize the Server

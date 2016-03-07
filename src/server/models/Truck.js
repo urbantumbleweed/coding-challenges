@@ -52,7 +52,7 @@ function _requestData(opts){
 }
 
 /**
- * The wrapper to the Socrata API.
+ * The wrapper to the Socrata API to request geo data by location and radius.
  * @memberOf Truck
  * @interface
  * @param {object} query request params from client request
@@ -66,9 +66,9 @@ function getTrucksByLocation(query){
   // Error Handling
   if (!query.latitude || !query.longitude){
     if (!query.latitude){
-      throw new Error('`Latitude` is a required property on the `query` object');
+      throw new Error('`latitude` is a required property on the `query` object');
     } else {
-      throw new Error('`Longitude` is a required property on the `query` object');
+      throw new Error('`longitude` is a required property on the `query` object');
     }
   }
 
@@ -80,6 +80,52 @@ function getTrucksByLocation(query){
 
   // the query string used with the API
   var qs = 'within_circle(location,' + latitude + ', ' + longitude + ', ' + radius+')';
+
+  // The request options used to generate the request.
+  var requestOptions = {
+    uri: BASE_URL,
+    qs: { //where to set criteria for search
+        $where: qs,//this sets the boundary for search
+        $limit: limit //this sets the limit of records
+    },
+    json: true // Automatically parses the JSON string in the response
+  };
+
+  // The request that returns a promise for a data object.
+  return _requestData(requestOptions)
+    .then(function(truckData){
+      return _transformTruckData(truckData);
+    })
+    .catch(function(err){
+      var Err = new Error('There was an error getting truck data by location', err);
+      console.log(Err, err);
+      throw Err;
+    });
+}
+
+/**
+ * The wrapper to the Socrata API to request data by geo boundary.
+ * @memberOf Truck
+ * @interface
+ * @param {object} query request params from client request
+ * @property  {number} query.nwLat [required] Northwest corner latitude of GoogleMaps map object bounds
+ * @property  {number} query.nwLng [required] Northwest corner longitude of GoogleMaps maps object bounds
+ * @property  {number} query.swLat [required] Southwest corner latitude of GoogleMaps map object bounds
+ * @property  {number} query.swLng [required] Southwest corner longitude of GoogleMaps map object bounds
+ * @property  {number} query.limit [optional] Max number of records the api should return. Default is 30
+ * @return {object}       Promise object with the transformed data for use on client.
+ */
+function getTrucksByBounds(query){
+  // Error Handling
+  if (!query.nwLat || !query.nwLng || !query.swLat || !query.swLng){
+    throw new Error('`nwLat`, `nwLng`, `swLat`, `swLng` are required properties on the `query` object');
+  }
+
+  // values pulled from query argument
+  var limit = query.limit || DEFAULT_LIMIT; //limit of records
+
+  // the query string used with the API
+  var qs = 'within_box(location,' + query.nwLat + ', ' + query.nwLng + ', ' + query.swLat+ ', '+ query.swLng +')';
 
   // The request options used to generate the request.
   var requestOptions = {
@@ -192,6 +238,7 @@ function _transformTruckData(dataIn){
 
 module.exports = {
   getTrucksByLocation: getTrucksByLocation,
+  getTrucksByBounds: getTrucksByBounds,
   _requestData: _requestData,
   _makeTaggedTruck: _makeTaggedTruck,
   _tagMap: _tagMap,

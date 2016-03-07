@@ -4,16 +4,20 @@ var path = require('path');
 
 module.exports = {
   entry: {
-    app: path.join(__dirname, './src/client/app.js')
+    app: path.join(__dirname, './src/client/index.js')
   },
   output: {
-      path: path.join(__dirname, "public"),
-      filename: "[name].bundle.js"
+      path: path.join(__dirname, './public'),
+      filename: "[name].js"
   },
   module: {
     loaders: [
-      { test: /\.css$/, loader: "style!css" },
-      { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader"}
-    ]
+      { test: /\.js$/,
+        exclude: /node_modules/,
+        loader: "babel-loader" },
+      { test: /\.css?$/,
+        loaders: [ 'style', 'raw' ],
+        include: path.join(__dirname, './src/client/')
+      }]
   }
 };
